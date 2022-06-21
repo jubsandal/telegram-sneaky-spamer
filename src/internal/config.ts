@@ -11,6 +11,16 @@ const ConfigSign = object({
         log: string(),
     }),
 
+    watchdog: optional(
+        object({
+            answer: optional(
+                object({
+                    frequencyHz: optional(number())
+                })
+            )
+        })
+    ),
+
     accounts: object({
         dailyMessagesLimit: number(),
         sleepTime: object({
@@ -69,18 +79,18 @@ if (!fs.existsSync(_cfg_path)) {
 
 type ConfigType = Infer<typeof ConfigSign>
 
-export function Config(): ConfigType {
-    let config
-    try {
-        config = JSON.parse(readFileSync(_cfg_path).toString());
-    } catch(e) {
-        throw new Error("Config parse error: " + e);
+    export function Config(): ConfigType {
+        let config
+        try {
+            config = JSON.parse(readFileSync(_cfg_path).toString());
+        } catch(e) {
+            throw new Error("Config parse error: " + e);
+        }
+
+        assert(config, ConfigSign);
+
+        return config;
     }
-
-    assert(config, ConfigSign);
-
-    return config;
-}
 
 const cfg = Config()
 

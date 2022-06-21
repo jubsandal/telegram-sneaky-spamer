@@ -1,6 +1,6 @@
-import { database } from './internal/accounts/accountsDatabase.js'
+import { database } from './../internal/accounts/accountsDatabase.js'
 import * as fs from 'fs'
-import { log } from './internal/misc/utils.js'
+import { log } from './../internal/misc/utils.js'
 
 const file = process.argv[2]
 
