@@ -52,28 +52,89 @@ export async function smrtClick(
     return await hoverAndClick();
 }
 
-function logTime() {
-    return '[' + new Date().toLocaleTimeString() + ']'
-}
+// interface Context {
 
-const logFileName = config.path.log + "/log_" + new Date().toLocaleDateString().replaceAll('/', '') + "_" + new Date().toLocaleTimeString("ru").replaceAll(":", '')
+// }
 
-type ExtendedLog = {
+// interface TelegramContext {
+
+// }
+
+// interface DiscordContext {
+
+// }
+
+// interface WebSocketContext {
+
+// }
+
+// export type MiddlewareFn<C extends Context> = (
+//     ctx: C,
+//     next: () => Promise<void>
+// ) => Promise<unknown> | void
+
+// export interface MiddlewareObj<C extends Context> {
+//     meddleware: () => MiddlewareFn<C>
+// }
+
+// export type Middleware<C extends Context> = MiddlewareFn<C> | MiddlewareObj<C>
+
+// export class log {
+//     readonly logfile: string
+
+//     constructor(path: string) {
+//         this.logfile = path +
+//             "/log_" + new Date().toLocaleDateString().replaceAll('/', '') +
+//             "_" + new Date().toLocaleTimeString("ru").replaceAll(":", '')
+//     }
+
+//     private logTime() {
+//         return '[' + new Date().toLocaleTimeString() + ']'
+//     }
+
+//     private createmsg(...arg: any[]) {
+//         return this.logTime() + ' - ' + arg.join(" ")
+//     }
+
+//     silent(...arg: any[]) {
+//         appendFileSync(this.logfile, this.logTime() + ' - ' + arg.join(" ") + "\n")
+//     }
+
+//     echo(...arg: any[]) {
+//         console.log(this.createmsg(arg))
+//     }
+
+//     error(...arg: any[]) {
+//         console.error(this.createmsg(arg))
+//     }
+
+// }
+
+interface ExtendedLog {
     (...arg: any[]): void,
     echo:  (...arg: any[]) => void
     error: (...arg: any[]) => void
 }
-export let log = <ExtendedLog>function(...arg: any[]): void {
-    appendFileSync(logFileName, logTime() + ' - ' + arg.join(" ") + "\n")
+
+function logtime() {
+    return '[' + new Date().toLocaleTimeString() + ']'
+}
+
+const logfile = config.path.log +
+    "/log_" + new Date().toLocaleDateString().replaceAll('/', '') +
+    "_" + new Date().toLocaleTimeString("ru").replaceAll(":", '')
+
+export const log = <ExtendedLog>function(...arg: any[]): void {
+    appendFileSync(logfile, logtime() + ' - ' + arg.join(" ") + "\n")
 }
 log.error = function(...arg: any[]) {
     log("ERROR:", ...arg)
 
-    console.error(logTime(), '-', chalk.red(...arg))
+    console.error(logtime(), '-', chalk.red(...arg))
 }
 log.echo = function(...arg: any[]) {
     log(...arg)
-    console.log(logTime(), '-', ...arg)
+    console.log(logtime(), '-', ...arg)
 }
 
 export module time {

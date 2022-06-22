@@ -15,7 +15,7 @@ export class Watchdog extends EventEmitter {
     private terminated: boolean
     private _onIteration: boolean // pseudo mutex
 
-    constructor(settings?: WatchdogSettings) {
+    constructor(private accounts: Array<Account>, settings?: WatchdogSettings) {
         super()
 
         const _settings = {
@@ -56,15 +56,10 @@ export class Watchdog extends EventEmitter {
     private async watch() {
         this._onIteration = true
         console.log("step")
-        const accounts = database.tables.accounts.documents.map(a => new database.ORM.Account(a))
-        for (const account of accounts) {
-            if (account.session === "") {
-                continue
-            }
+        for (const account of this.accounts) {
             for (const target of account.targets) {
                 if (target.last_posted_message_id > 0) {
-                    const apiAccount = new Account(account)
-                    const messages = await apiAccount.getUnreadedMessages(target.target, {
+                    const messages = await account.getUnreadedMessages(target.target, {
                         id: target.last_posted_message_id
                     })
 

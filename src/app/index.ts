@@ -25,6 +25,7 @@ export class App {
         AnswerWatchdog = new Worker("./dist/app/threads/watchdogThread.js", {
             workerData: {
                 path: "./src/app/threads/watchdogThread.js",
+                accounts: accounts
             }
         })
 

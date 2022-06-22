@@ -1,3 +1,5 @@
-import { Watchdog } from './answerWatcher.js'
+import { Watchdog as AnswerWatchdog } from './answerWatcher.js'
 
-export let AnswerWatchdog = Watchdog
+export {
+    AnswerWatchdog
+}
